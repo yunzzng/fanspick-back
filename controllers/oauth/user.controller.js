@@ -60,8 +60,13 @@ const login = async (req, res) => {
         console.log("유저 정보 가져오기 성공:", user);
         res.status(200).json({
             message: '로그인 성공!',
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+            },
             token,
-            user: { id: user._id, name: user.name, email: user.email },
         });
     } catch (error) {
         console.error('로그인 오류:', error);
