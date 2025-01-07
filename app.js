@@ -5,8 +5,8 @@ const MongoDBSessionStore = require('connect-mongodb-session')(session);
 const { SESSION_SECRET, MONGODB_URL } = require("./consts/app");
 const oauthRoutes = require("./routes/oauth/oauth.routes");
 const managerRoutes = require("./routes/manager/manager.routes");
+
 // ============= passport ============= 
-const passport = require('passport');
 require("./passport/jwt.strategy");
 require("./passport/google.strategy");
 require("./passport/kakao.strategy");
@@ -29,5 +29,6 @@ app.use(session({
 
 // 라우터
 app.use("/api/oauth", oauthRoutes);
+app.use("/api/manager", managerRoutes);
 
 module.exports = app;
