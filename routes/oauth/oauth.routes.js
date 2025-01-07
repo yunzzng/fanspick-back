@@ -1,14 +1,29 @@
 const express = require('express');
-const { signup, login, logout, getUserProfile } = require('../../controllers/oauth/oauth.controller');
-
-const jwtMiddleware = require('../../middleware/jwtMiddleware');
-
+const { signup, login, logout, getUserProfile } = require('../../controllers/oauth/user.controller');
+const passport = require('passport'); 
+const { handleGoogleCallback, handleKakaoCallback, handleNaverCallback } = require('../../controllers/oauth/oauth.controller');
 const router = express.Router();
 
 // 라우터 정의
 router.post('/signup', signup); // /api/oauth/signup
-router.post('/login', login); // /api/oauth/signup
-router.get('/header', jwtMiddleware, getUserProfile); // /api/oauth/header
-router.post('/logout', jwtMiddleware, logout); // /api/oauth/logout
+router.post('/login', login); // /api/oauth/login
+router.get('/header', passport.authenticate('jwt', { session: false }), getUserProfile); /// /api/oauth/header
+router.post('/logout', logout); // /api/oauth/logout
+
+// 간편 로그인
+// 구글 로그인
+router.get("/google", passport.authenticate("google", {scope: ["profile", "email"]}));
+// 구글 콜백
+router.get("/google/callback", passport.authenticate("google", { session: false }), handleGoogleCallback);
+
+// 카카오 로그인
+router.get("/kakao", passport.authenticate("kakao"));
+// 카카오 콜백
+router.get("/kakao/callback", passport.authenticate("kakao", { session:false }), handleKakaoCallback);
+
+// 네이버 로그인
+router.get("/naver", passport.authenticate("naver", {scope: ["profile", "email"]}));
+// 네이버 콜백
+router.get("/naver/callback", passport.authenticate("naver", { session:false }), handleNaverCallback);
 
 module.exports = router;
