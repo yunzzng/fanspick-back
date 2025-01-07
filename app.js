@@ -4,7 +4,7 @@ const session = require("express-session");
 const MongoDBSessionStore = require('connect-mongodb-session')(session);
 const { SESSION_SECRET, MONGODB_URL } = require("./consts/app");
 const oauthRoutes = require("./routes/oauth/oauth.routes");
-
+const managerRoutes = require("./routes/manager/manager.routes");
 // ============= passport ============= 
 const passport = require('passport');
 require("./passport/jwt.strategy");
