@@ -1,7 +1,7 @@
 const express = require('express');
 const { signup, login, logout, getUserProfile } = require('../../controllers/oauth/user.controller');
 const passport = require('passport'); 
-const { handleGoogleCallback, handleKakaoCallback, handleNaverCallback } = require('../../controllers/oauth/oauth.controller');
+const { handleSocialLoginCallback } = require('../../controllers/oauth/oauth.controller');
 const router = express.Router();
 
 // 라우터 정의
@@ -14,16 +14,16 @@ router.post('/logout', logout); // /api/oauth/logout
 // 구글 로그인
 router.get("/google", passport.authenticate("google", {scope: ["profile", "email"]}));
 // 구글 콜백
-router.get("/google/callback", passport.authenticate("google", { session: false }), handleGoogleCallback);
+router.get("/google/callback", passport.authenticate("google", { session: false }), handleSocialLoginCallback);
 
 // 카카오 로그인
 router.get("/kakao", passport.authenticate("kakao"));
 // 카카오 콜백
-router.get("/kakao/callback", passport.authenticate("kakao", { session:false }), handleKakaoCallback);
+router.get("/kakao/callback", passport.authenticate("kakao", { session: false }), handleSocialLoginCallback);
 
 // 네이버 로그인
 router.get("/naver", passport.authenticate("naver", {scope: ["profile", "email"]}));
 // 네이버 콜백
-router.get("/naver/callback", passport.authenticate("naver", { session:false }), handleNaverCallback);
+router.get("/naver/callback", passport.authenticate("naver", { session: false }), handleSocialLoginCallback);
 
 module.exports = router;

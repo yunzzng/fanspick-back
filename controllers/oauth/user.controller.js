@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const signup = async (req, res) => {
     try {
         const { name, email, password, role, termsAccepted } = req.body;
+        console.log("회원가입 요청 받음:", req.body);
 
         if (!name || !email || !password || !termsAccepted) {
             return res.status(400).json({ message: '모든 필수 필드를 입력하세요.' });
@@ -28,7 +29,7 @@ const signup = async (req, res) => {
             password: hashedPassword, 
             termsAccepted 
         });
-
+        console.log("새로운 사용자 생성 완료:", newUser);
         res.status(201).json({ message: '회원가입 성공!', user: newUser });
     } catch (error) {
         console.error(error);
@@ -53,10 +54,10 @@ const login = async (req, res) => {
             { id: user._id, email: user.email },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
-          );
+        );
       
-          res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Path=/`);
-
+        res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Path=/`);
+        console.log("유저 정보 가져오기 성공:", user);
         res.status(200).json({
             message: '로그인 성공!',
             token,
