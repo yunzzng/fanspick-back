@@ -7,7 +7,6 @@ const oauthRoutes = require("./routes/oauth/oauth.routes");
 const managerRoutes = require("./routes/manager/manager.routes");
 
 // ============= passport ============= 
-require("./passport/jwt.strategy");
 require("./passport/google.strategy");
 require("./passport/kakao.strategy");
 require("./passport/naver.strategy");
