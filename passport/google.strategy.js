@@ -11,6 +11,7 @@ passportGoogleOauth.use(new GoogleOauthStrategy({
         const user = {
             accessToken,
             profile,
+            provider: 'google',
             role: 'user', 
         };
         console.log("Access Token:", accessToken);
