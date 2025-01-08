@@ -7,8 +7,7 @@ const oauthRoutes = require("./routes/oauth/oauth.routes");
 const managerRoutes = require("./routes/manager/manager.routes");
 const purchaseRoutes = require("./routes/purchase/purchase.routes");
 
-// ============= passport =============
-require("./passport/jwt.strategy");
+// ============= passport ============= 
 require("./passport/google.strategy");
 require("./passport/kakao.strategy");
 require("./passport/naver.strategy");

@@ -2,7 +2,6 @@ const passportNaverOauth = require('passport');
 const NaverOauthStrategy = require("passport-naver").Strategy;
 const { NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, NAVER_CLIENT_CALLBACK_URL } = require("../consts/app")
 
-
 passportNaverOauth.use(new NaverOauthStrategy({
     clientID: NAVER_CLIENT_ID,
     clientSecret: NAVER_CLIENT_SECRET,

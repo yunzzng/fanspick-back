@@ -17,7 +17,7 @@ router.get("/google", passport.authenticate("google", {scope: ["profile", "email
 router.get("/google/callback", passport.authenticate("google", { session: false }), handleSocialLoginCallback);
 
 // 카카오 로그인
-router.get("/kakao", passport.authenticate("kakao"));
+router.get("/kakao", passport.authenticate("kakao", { scope: ["profile_nickname", "profile_image"] }));
 // 카카오 콜백
 router.get("/kakao/callback", passport.authenticate("kakao", { session: false }), handleSocialLoginCallback);
 
