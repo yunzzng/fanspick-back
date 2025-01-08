@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const handleSocialLoginCallback = async (req, res) => {
     const { provider, profile } = req.user;
     console.log(`${provider} 로그인 후 req.user:`, req.user);
@@ -9,17 +11,6 @@ const handleSocialLoginCallback = async (req, res) => {
         return res.status(400).json({ message: "Access Token 저장 실패" });
     }
 
-    // 세션에 Access Token 저장
-    req.session.accessToken = accessToken;
-    console.log("세션에 Access Token 저장됨:", accessToken);
-
-    // 쿠키에 Access Token 저장
-    res.cookie("token", accessToken, {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 1일
-    });
-    console.log("쿠키에 Access Token 저장됨:", accessToken);
-
     try {
         let user = { provider, id: profile.id, role: 'user' };
 
@@ -30,7 +21,7 @@ const handleSocialLoginCallback = async (req, res) => {
                 avatar: profile._json.properties.profile_image || '',
             };
         }
-        
+
         if (provider === 'google') {
             user = {
                 ...user,
@@ -49,15 +40,21 @@ const handleSocialLoginCallback = async (req, res) => {
             };
         }
 
-        console.log("프로필 정보 저장 준비:", user);
+        // JWT 토큰 생성
+        const token = jwt.sign(
+            { id: user.id, email: user.email || user.nickname, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
 
-        // DB 저장 로직 (선택적)
-        // await saveUserToDatabase(user);
+        res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Path=/;`);
+        console.log("JWT 토큰 생성 및 저장 완료:", token);
 
-        console.log("프로필 정보 저장 완료:", user);
-
-        // JSON으로 유저 정보 전달
-        res.status(200).json({ success: true, user });
+        res.status(200).json({
+            message: '로그인 성공!',
+            user,
+            token,
+        });
     } catch (error) {
         console.error("프로필 정보 저장 중 오류 발생:", error);
         res.status(500).json({ success: false, message: "서버 오류 발생" });
