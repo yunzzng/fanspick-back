@@ -84,9 +84,15 @@ const getUserProfile = async (req, res) => {
             return res.status(404).json({ message: '유저를 찾을 수 없습니다.' });
         }
 
+        console.log("user정보:",user)
+
         res.status(200).json({
             message: '유저 정보 가져오기 성공!',
-            user: { id: user._id, name: user.name, email: user.email },
+            user: { 
+                id: user._id,
+                name: user.name, 
+                email: user.email,
+            },
         });
     } catch (error) {
         console.error('유저 정보 가져오기 오류:', error);
