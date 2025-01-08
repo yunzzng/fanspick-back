@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const addressSchema = require('../mypage/address.schema');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -11,7 +12,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  password: {
+  password: { 
     type: String,
     required: true,
   },
@@ -23,7 +24,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["user", "manager"],
     required: true,
-}
+  },
+  address: {
+    type: addressSchema,
+    required: false
+  },
 }, {
   timestamps: true,
 });
