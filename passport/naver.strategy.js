@@ -12,6 +12,7 @@ passportNaverOauth.use(new NaverOauthStrategy({
         const user = {
             accessToken,
             profile,
+            provider: 'naver', 
             role: 'user', 
         };
         console.log("Access Token:", accessToken);

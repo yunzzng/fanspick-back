@@ -1,7 +1,7 @@
 const { FRONT_URL } = require('../../consts/app');
 
 const handleSocialLoginCallback = (req, res) => {
-    const { provider } = req.user; 
+    const { provider, profile } = req.user
     console.log(`${provider} 로그인 후 req.user:`, req.user);
     const accessToken = req.user ? req.user.accessToken : null;
     

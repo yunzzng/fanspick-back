@@ -10,6 +10,7 @@ passportKakaoOauth.use(new KakaoOauthStrategy({
     const user = {
         accessToken,
         profile,
+        provider: 'kakao', 
         role: 'user', 
     };
     console.log("Access Token:", accessToken);
