@@ -25,7 +25,14 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "manager"],
     required: true,
   },
-  address: addressSchema, 
+  address: {
+    type: addressSchema,
+    required: false
+  },
+  profileImage: {
+    type: String,
+    required: false,
+  }
 }, {
   timestamps: true,
 });
