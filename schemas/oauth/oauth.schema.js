@@ -26,9 +26,13 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   address: {
-    type: addressSchema,
-    required: false
+    type: addressSchema, 
+    required: false,     
   },
+  profileImage: {
+    type: String,
+    required: false,
+  }
 }, {
   timestamps: true,
 });
