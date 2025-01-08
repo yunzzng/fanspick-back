@@ -1,21 +1,46 @@
+const { Category } = require("../../schemas/category/category.schema");
 const { createProduct } = require("../../service/product/product.service");
 
 const addProduct = async (req, res) => {
   try {
-    const { name, price, introduce } = req.body;
+    const { name, price, introduce, image, detailImage, categoryIndex } =
+      req.body;
+    console.log("categoryIndex ", categoryIndex);
+    console.log("detailImage ", detailImage);
 
-    if (!name || !price || !introduce) {
+    if (
+      !name ||
+      !price ||
+      !introduce ||
+      !image ||
+      !detailImage ||
+      !categoryIndex
+    ) {
       return res
         .status(400)
         .json({ message: "입력이 안된 필드값이 있습니다." });
     }
+    const categories = await Category.find();
 
+    /* 상품등록에서 선택한 카테고리 index를 DB에 저장된 첫번째 카테고리 name 배열 index에 넣기 */
+    const resultCategoryName = categories[0].name[categoryIndex];
+    console.log("categories ", categories);
+    console.log("resultCategoryName ", resultCategoryName);
+    if (!resultCategoryName) {
+      return res
+        .status(404)
+        .json({ message: "유효하지 않은 카테고리 인덱스입니다." });
+    }
+    const resultCategory = { name: resultCategoryName };
+
+    console.log("resultCategory ", resultCategory);
     const createResult = await createProduct({
       name,
       price,
       introduce,
-      image: "",
-      detailImage: "",
+      image,
+      detailImage,
+      category: resultCategory,
     });
 
     if (createResult) {
