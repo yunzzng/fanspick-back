@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
   profileImage: {
     type: String,
     required: false,
+  },
+  businessNumber: {
+    type: String,
+    required: false,
   }
 }, {
   timestamps: true,
