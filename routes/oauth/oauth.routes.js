@@ -1,5 +1,5 @@
 const express = require('express');
-const { signup, login, logout, getUserProfile } = require('../../controllers/oauth/user.controller');
+const { signup, login, logout, getUserProfile, updateUserProfile } = require('../../controllers/oauth/user.controller');
 const passport = require('passport'); 
 const { handleSocialLoginCallback } = require('../../controllers/oauth/oauth.controller');
 const router = express.Router();
@@ -9,6 +9,7 @@ router.post('/signup', signup); // /api/oauth/signup
 router.post('/login', login); // /api/oauth/login
 router.get('/header', passport.authenticate('jwt', { session: false }), getUserProfile); /// /api/oauth/header
 router.post('/logout', logout); // /api/oauth/logout
+router.put('/profile-update',passport.authenticate('jwt', { session: false }),updateUserProfile) // /api/oauth/profile/update
 
 // 간편 로그인
 // 구글 로그인

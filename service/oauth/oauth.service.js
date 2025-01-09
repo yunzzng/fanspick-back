@@ -14,9 +14,13 @@ const createUser = async (userData) => {
     return user;
 };
 
+const updateUserById = async (id, updatedData) => {
+  return await User.findByIdAndUpdate(id, updatedData, { new: true });
+};
   
 module.exports = {
   findUserByEmail,
   findUserById,
   createUser,
+  updateUserById,
 };

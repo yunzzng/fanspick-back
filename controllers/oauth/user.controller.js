@@ -1,5 +1,5 @@
 const crypto = require('crypto'); 
-const { findUserByEmail, createUser, findUserById } = require('../../service/oauth/oauth.service');
+const { findUserByEmail, createUser, findUserById, updateUserById } = require('../../service/oauth/oauth.service');
 const jwt = require('jsonwebtoken');
 
 const signup = async (req, res) => {
@@ -65,6 +65,9 @@ const login = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                profileImage: user.profileImage,
+                businessNumber: user.businessNumber, 
+                address: user.address 
             },
             token,
         });
@@ -92,6 +95,10 @@ const getUserProfile = async (req, res) => {
                 id: user._id,
                 name: user.name, 
                 email: user.email,
+                role: user.role,
+                profileImage: user.profileImage,
+                businessNumber: user.businessNumber, 
+                address: user.address 
             },
         });
     } catch (error) {
@@ -111,9 +118,44 @@ const logout = async (req, res) => {
     }
 };
 
+// 프로필 수정
+const updateUserProfile = async (req, res) => {
+    try {
+        const userId = req.user.id; 
+        const { name, email, password, address, profileImage } = req.body;
+
+        let updatedData = { name, email, address, profileImage };
+        if (password) {
+            const hashedPassword = crypto
+                .createHash('sha512')
+                .update(password)
+                .digest('base64');
+            updatedData.password = hashedPassword;
+        }
+
+        const updatedUser = await updateUserById(userId, updatedData);
+        console.log('유저 프로필 수정 완료:', updatedUser);
+
+        res.status(200).json({
+            message: '유저 프로필이 성공적으로 수정되었습니다.',
+            user: {
+                id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                address: updatedUser.address,
+                profileImage: updatedUser.profileImage,
+            },
+        });
+    } catch (error) {
+        console.error('유저 프로필 수정 중 오류:', error);
+        res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+    }
+};
+
 module.exports = {
     signup,
     login,
     getUserProfile,
     logout,
+    updateUserProfile,
 };

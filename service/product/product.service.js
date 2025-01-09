@@ -10,6 +10,19 @@ const createProduct = async (Data) => {
   }
 };
 
+const findAllProduct = async () => {
+  try {
+    const product = await Product.find();
+    if (!product) {
+      return null;
+    }
+    return product;
+  } catch (err) {
+    console.log("[getAllfindAllProduct] Error ", err);
+    throw new Error("모든 상품 조회에 실패했습니다.");
+  }
+};
 module.exports = {
   createProduct,
+  findAllProduct,
 };
