@@ -8,7 +8,7 @@ const handleSocialLoginCallback = async (req, res) => {
 
   if (!accessToken) {
     console.log("Access Token 없음");
-    return res.status(400).json({ message: "Access Token 저장 실패" });
+    return res.status(401).json({ message: "Access Token 저장 실패" });
   }
 
   try {
