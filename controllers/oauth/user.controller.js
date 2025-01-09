@@ -79,7 +79,7 @@ const getUserProfile = async (req, res) => {
     try {
         const userId = req.user.id; // JWT로부터 디코딩된 유저 ID
         const user = await findUserById(userId);
-
+        
         if (!user) {
             return res.status(404).json({ message: '유저를 찾을 수 없습니다.' });
         }
