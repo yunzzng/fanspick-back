@@ -7,6 +7,7 @@ const { SESSION_SECRET, MONGODB_URL } = require("./consts/app");
 const oauthRoutes = require("./routes/oauth/oauth.routes");
 const managerRoutes = require("./routes/manager/manager.routes");
 const purchaseRoutes = require("./routes/purchase/purchase.routes");
+const reviewRoutes = require("./routes/review/review.routes");
 
 // ============= passport ============= 
 require("./passport/jwt.strategy");
@@ -38,5 +39,6 @@ app.use(
 app.use("/api/oauth", oauthRoutes);
 app.use("/api/manager", managerRoutes);
 app.use("/api/purchase", purchaseRoutes);
+app.use("/api/review", reviewRoutes);
 
 module.exports = app;
