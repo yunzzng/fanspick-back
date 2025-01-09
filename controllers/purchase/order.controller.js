@@ -1,9 +1,10 @@
-const { createOrder } = require("../../service/purchase/order.service");
+const { createOrder, getOrderList } = require("../../service/purchase/order.service");
 
 const addOrder = async (req, res) => {
   try {
-    const { userId, products, orderAddress, imp_uid } = req.body;
-
+    const { products, orderAddress, imp_uid } = req.body;
+    const {userId} = req.user.id;
+    
     /* if (!userId || !products || !orderAddress) {
       return res
         .status(400)
@@ -28,6 +29,24 @@ const addOrder = async (req, res) => {
   }
 };
 
+const readOrderList = async(req,res) => {
+  try {
+    const userId = req.user.id;
+
+    const orderList = await getOrderList(userId);
+
+    if(orderList) {
+      return res
+        .status(200)
+        .json({message:"주문 내역 조회 성공"});
+    }
+  }catch(err) {
+    console.error(err);
+    return res.status(500).json({message:"주문 내역 조회 실패"});
+  }
+}
+
 module.exports = {
   addOrder,
+  readOrderList
 };

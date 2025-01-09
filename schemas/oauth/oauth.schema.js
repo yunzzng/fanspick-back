@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
   businessNumber: {
     type: String,
     required: false,
-  }
+  },
 }, {
   timestamps: true,
 });
