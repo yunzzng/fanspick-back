@@ -1,8 +1,14 @@
-const mongoose = require("mongoose");
-const { categorySchema } = require("../category/category.schema");
+const mongoose = require('mongoose');
+const { categorySchema } = require('../category/category.schema');
+const { ObjectId } = mongoose.Schema.Types;
 
 const productSchema = new mongoose.Schema(
   {
+    userId: {
+      type: ObjectId,
+      required: true,
+      ref: 'User',
+    },
     name: {
       type: String,
       required: true,
@@ -33,7 +39,7 @@ const productSchema = new mongoose.Schema(
   {
     // 삭제된 시간 추가
     timestamps: true,
-  }
+  },
 );
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model('Product', productSchema);
