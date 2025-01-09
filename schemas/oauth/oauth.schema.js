@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     type: addressSchema,
     required: false,
   },
-  
+   
   profileImage: {
     type: String,
     required: false,

@@ -10,7 +10,6 @@ const addProduct = async (req, res) => {
       req.body;
     console.log("categoryIndex ", categoryIndex);
     console.log("detailImage ", detailImage);
-
     if (
       !name ||
       !price ||
@@ -46,11 +45,9 @@ const addProduct = async (req, res) => {
       category: resultCategory,
     });
 
-    if (createResult) {
-      return res
-        .status(200)
-        .json({ data: createResult, message: "상품 등록 완료되었습니다." });
-    }
+    res
+      .status(201)
+      .json({ data: createResult, message: "상품 등록 완료되었습니다." });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: err.message });
@@ -64,7 +61,7 @@ const getAllProduct = async (req, res) => {
       return res.status(404).json({ message: "상품을 찾을 수 없습니다." });
     }
     console.log("product ", product);
-    res.status(200).json({
+    res.status(201).json({
       message: "모든상품 조회완료",
       product: product.map((item) => ({
         _id: item._id,
