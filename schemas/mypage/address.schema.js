@@ -13,7 +13,7 @@ const addressSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    detail: {
+    detailAddress: {
         type: String,
         required: true,
     },
