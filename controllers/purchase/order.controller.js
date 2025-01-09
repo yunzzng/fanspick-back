@@ -32,13 +32,14 @@ const addOrder = async (req, res) => {
 const readOrderList = async(req,res) => {
   try {
     const userId = req.user.id;
+    console.log('주문내역 조회 유저 아이디', userId);
 
     const orderList = await getOrderList(userId);
 
     if(orderList) {
       return res
         .status(200)
-        .json({message:"주문 내역 조회 성공"});
+        .json({message:"주문 내역 조회 성공", orderList});
     }
   }catch(err) {
     console.error(err);
