@@ -27,8 +27,9 @@ const userSchema = new mongoose.Schema({
   },
   address: {
     type: addressSchema,
-    required: false
+    required: false,
   },
+  
   profileImage: {
     type: String,
     required: false,
@@ -38,4 +39,3 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('User', userSchema);
-

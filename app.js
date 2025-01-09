@@ -1,5 +1,6 @@
 require("./db_init");
 const express = require("express");
+const cors = require("cors");
 const session = require("express-session");
 const MongoDBSessionStore = require("connect-mongodb-session")(session);
 const { SESSION_SECRET, MONGODB_URL } = require("./consts/app");
@@ -7,8 +8,7 @@ const oauthRoutes = require("./routes/oauth/oauth.routes");
 const managerRoutes = require("./routes/manager/manager.routes");
 const purchaseRoutes = require("./routes/purchase/purchase.routes");
 
-// ============= passport =============
-require("./passport/jwt.strategy");
+// ============= passport ============= 
 require("./passport/google.strategy");
 require("./passport/kakao.strategy");
 require("./passport/naver.strategy");
@@ -17,6 +17,9 @@ require("./passport/naver.strategy");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
 app.use(
   session({
     secret: SESSION_SECRET,

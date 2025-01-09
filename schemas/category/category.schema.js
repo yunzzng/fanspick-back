@@ -2,19 +2,19 @@ const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema(
   {
-    id: {
-      type: String,
-      required: true,
-    },
     name: {
-      type: String,
+      type: [String],
       required: true,
-      trim: true,
     },
+    // parentCategoryId 하위카테고리 고민
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("Category", categorySchema);
+const Category = mongoose.model("Category", categorySchema);
+module.exports = {
+  categorySchema,
+  Category,
+};

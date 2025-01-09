@@ -6,15 +6,16 @@ passportKakaoOauth.use(new KakaoOauthStrategy({
     clientID: KAKAO_CLIENT_ID,
     clientSecret: KAKAO_CLIENT_SECRET,
     callbackURL: KAKAO_CALLBACK_URL,
-}, (accessToken, refreshToken, profile, done) => {
-    const user = {
-        accessToken,
-        profile,
-        provider: 'kakao', 
-        role: 'user', 
-    };
-    console.log("Access Token:", accessToken);
-    return done(null, user);
-}));
+    }, (accessToken, refreshToken, profile, done) => {
+        const user = {
+            accessToken,
+            profile,
+            provider: 'kakao', 
+            role: 'user', 
+        };
+        console.log("Access Token:", accessToken);
+        return done(null, user);
+    }
+));
 
 module.exports = passportKakaoOauth;

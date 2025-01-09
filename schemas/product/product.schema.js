@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { categorySchema } = require("../category/category.schema");
 
 const productSchema = new mongoose.Schema(
   {
@@ -15,6 +16,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // 배열로 관리
     image: {
       type: String,
       required: true,
@@ -23,8 +25,13 @@ const productSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
+    category: {
+      type: categorySchema,
+      required: true,
+    },
   },
   {
+    // 삭제된 시간 추가
     timestamps: true,
   }
 );
