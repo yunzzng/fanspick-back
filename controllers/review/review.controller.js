@@ -1,4 +1,4 @@
-const { createReview } = require("../../service/review/review.service");
+const { createReview, findReviewsByProduct } = require("../../service/review/review.service");
 
 const addReview = async (req, res) => {
   try {
@@ -28,6 +28,31 @@ const addReview = async (req, res) => {
   }
 };
 
+// 리뷰 조회 (상세페이지)
+const getReviewsByProduct = async (req, res) => {
+  try {
+    const { productId } = req.params; 
+    const { page, itemsPerPage } = req.query; 
+
+    const { reviews, totalCount } = await findReviewsByProduct(productId, page, itemsPerPage);
+
+    res.status(200).json({
+        isError: false,
+        message: "리뷰 목록 조회에 성공했습니다.",
+        productId,
+        reviews,
+        totalCount,
+    });
+} catch (error) {
+    console.error("리뷰 조회 중 에러: ", error.message);
+    res.status(500).json({
+        isError: true,
+        message: "리뷰 조회에 실패했습니다.",
+    });
+}
+};
+
 module.exports = {
   addReview,
+  getReviewsByProduct, 
 };
