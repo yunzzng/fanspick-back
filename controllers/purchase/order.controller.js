@@ -35,7 +35,7 @@ const readOrderList = async(req,res) => {
     console.log('주문내역 조회 유저 아이디', userId);
 
     const orderList = await getOrderList(userId);
-
+''
     if(orderList) {
       return res
         .status(200)
