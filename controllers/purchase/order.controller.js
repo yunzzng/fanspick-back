@@ -1,10 +1,13 @@
-const { createOrder, getOrderList } = require("../../service/purchase/order.service");
+const {
+  createOrder,
+  getOrderList,
+} = require('../../service/purchase/order.service');
 
 const addOrder = async (req, res) => {
   try {
     const { products, orderAddress, imp_uid } = req.body;
-    const {userId} = req.user.id;
-    
+    const { userId } = req.user.id;
+
     /* if (!userId || !products || !orderAddress) {
       return res
         .status(400)
@@ -21,7 +24,7 @@ const addOrder = async (req, res) => {
     if (createResult) {
       return res
         .status(200)
-        .json({ data: createResult, message: "구매 완료되었습니다." });
+        .json({ data: createResult, message: '구매 완료되었습니다.' });
     }
   } catch (err) {
     console.error(err);
@@ -29,25 +32,25 @@ const addOrder = async (req, res) => {
   }
 };
 
-const readOrderList = async(req,res) => {
+const readOrderList = async (req, res) => {
   try {
     const userId = req.user.id;
     console.log('주문내역 조회 유저 아이디', userId);
 
     const orderList = await getOrderList(userId);
 
-    if(orderList) {
+    if (orderList) {
       return res
         .status(200)
-        .json({message:"주문 내역 조회 성공", orderList});
+        .json({ message: '주문 내역 조회 성공', orderList });
     }
-  }catch(err) {
+  } catch (err) {
     console.error(err);
-    return res.status(500).json({message:"주문 내역 조회 실패"});
+    return res.status(500).json({ message: '주문 내역 조회 실패' });
   }
-}
+};
 
 module.exports = {
   addOrder,
-  readOrderList
+  readOrderList,
 };
