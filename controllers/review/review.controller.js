@@ -1,4 +1,4 @@
-const { createReview } = require("../../service/review/review.service");
+const { createReview, findReviewsByProduct } = require("../../service/review/review.service");
 
 const addReview = async (req, res) => {
   try {
@@ -31,15 +31,25 @@ const addReview = async (req, res) => {
 // 리뷰 조회 (상세페이지)
 const getReviewsByProduct = async (req, res) => {
   try {
-    const { productId } = req.params;
+    const { productId } = req.params; 
+    const { page, itemsPerPage } = req.query; 
 
-    const reviews = await reviewService.findReviewsByProduct(productId);
+    const { reviews, totalCount } = await findReviewsByProduct(productId, page, itemsPerPage);
 
-    res.status(200).json({ message: "리뷰 목록 가져오기 성공!", reviews });
-  } catch (error) {
-    console.error("제품 리뷰 가져오기 오류:", error);
-    res.status(500).json({ message: "제품 리뷰 가져오는 중 서버 오류가 발생했습니다." });
-  }
+    res.status(200).json({
+        isError: false,
+        message: "리뷰 목록 조회에 성공했습니다.",
+        productId,
+        reviews,
+        totalCount,
+    });
+} catch (error) {
+    console.error("리뷰 조회 중 에러: ", error.message);
+    res.status(500).json({
+        isError: true,
+        message: "리뷰 조회에 실패했습니다.",
+    });
+}
 };
 
 module.exports = {
