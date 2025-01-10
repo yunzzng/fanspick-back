@@ -28,6 +28,7 @@ const addReview = async (req, res) => {
   }
 };
 
+// 리뷰 조회 (상세페이지)
 const getReviewsByProduct = async (req, res) => {
   try {
     const { productId } = req.params;
