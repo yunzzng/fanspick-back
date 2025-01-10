@@ -28,6 +28,21 @@ const addReview = async (req, res) => {
   }
 };
 
+// 리뷰 조회 (상세페이지)
+const getReviewsByProduct = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    const reviews = await reviewService.findReviewsByProduct(productId);
+
+    res.status(200).json({ message: "리뷰 목록 가져오기 성공!", reviews });
+  } catch (error) {
+    console.error("제품 리뷰 가져오기 오류:", error);
+    res.status(500).json({ message: "제품 리뷰 가져오는 중 서버 오류가 발생했습니다." });
+  }
+};
+
 module.exports = {
   addReview,
+  getReviewsByProduct, 
 };
