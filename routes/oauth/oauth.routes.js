@@ -25,7 +25,7 @@ router.put(
   "/profile-update",
   passport.authenticate("jwt", { session: false }),
   updateUserProfile
-); // /api/oauth/profile/update
+); // /api/oauth/profile-update
 
 // 간편 로그인
 // 구글 로그인
