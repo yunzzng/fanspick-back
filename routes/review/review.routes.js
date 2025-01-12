@@ -17,14 +17,14 @@ router.post(
   addReview,
 ); // /api/review/add
 
-// 리뷰 조회(단일)
+// 리뷰 조회(단일) > 수정페이지
 router.get(
   '/:reviewId',
   passport.authenticate('jwt', { session: false }),
   getReviewById,
 );
 
-// 리뷰 조회(상세피이지)
+// 리뷰 조회(상품상세피이지)
 router.get(
   '/product/:productId',
   passport.authenticate('jwt', { session: false }),

@@ -57,8 +57,11 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1m" }
     );
+
+    const decoded = jwt.decode(token);
+    const tokenExpiry = decoded.exp * 1000;
 
     res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Path=/`);
     console.log("유저 정보 가져오기 성공:", user);
@@ -74,6 +77,7 @@ const login = async (req, res) => {
         address: user.address,
       },
       token,
+      tokenExpiry,
     });
   } catch (error) {
     console.error("로그인 오류:", error);
