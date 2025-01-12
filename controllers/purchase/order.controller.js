@@ -7,7 +7,7 @@ const addOrder = async (req, res) => {
   try {
     const { userId, products, orderAddress, imp_uid, totalPrice } = req.body;
 
-    if (!userId || !products || !orderAddress) {
+    if (!orderAddress) {
       return res
         .status(400)
         .json({ message: '입력이 안된 필드값이 있습니다.' });
