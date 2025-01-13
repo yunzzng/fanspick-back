@@ -7,7 +7,7 @@ const {
 } = require('../../controllers/mypage/mypage.controller');
 
 router.get(
-  '/product-by-ids',
+  '/productbyids',
   passport.authenticate('jwt', { session: false }),
   getProductsByIds,
 ); // /api/mypage/product-by-ids
