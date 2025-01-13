@@ -15,7 +15,7 @@ const getOrderList = async (userId) => {
   try {
     const orderList = await Order.find({ userId }).populate(
       'products.productId',
-      'name price introduce',
+      'name price image',
     );
     return orderList;
   } catch (err) {
