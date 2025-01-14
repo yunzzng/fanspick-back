@@ -46,13 +46,12 @@ const findProductCategory = async (page, itemsPerPage, category) => {
   }
 };
 /* 모든 상품 조회(페이지네이션) */
-const findAllProductByUser = async (userId, page, itemsPerPage) => {
+const findAllProductByUser = async (page, itemsPerPage) => {
   try {
     const limit = itemsPerPage;
     const skip = (page - 1) * limit;
 
-    const products = await Product.find({})
-      .populate('userId', 'name')
+    const products = await Product.find()
       .sort('createdAt')
       .skip(skip)
       .limit(limit);
