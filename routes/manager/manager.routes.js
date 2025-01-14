@@ -27,11 +27,7 @@ router.get(
   getAllProduct,
 ); // /api/manager/products
 
-router.get(
-  '/products-category',
-  passport.authenticate('jwt', { session: false }),
-  getProductCategory,
-); // /api/manager/products-category
+router.get('/products-category', getProductCategory); // /api/manager/products-category
 
 router.get(
   '/product/:id',
