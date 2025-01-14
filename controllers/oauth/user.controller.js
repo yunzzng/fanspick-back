@@ -63,7 +63,7 @@ const login = async (req, res) => {
     const decoded = jwt.decode(token);
     const tokenExpiry = decoded.exp * 1000;
 
-    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/`);
+    // res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/`);
     console.log('유저 정보 가져오기 성공:', user);
     res.status(200).json({
       message: '로그인 성공!',
