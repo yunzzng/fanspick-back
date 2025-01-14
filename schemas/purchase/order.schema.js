@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const addressSchema = require('../mypage/address.schema');
 const { ObjectId } = mongoose.Schema.Types;
 
 const orderSchema = new mongoose.Schema(
@@ -44,7 +45,7 @@ const orderSchema = new mongoose.Schema(
     },
 
     /* 타입 */
-    orderAddress: {
+    /* orderAddress: {
       roadAddress: {
         type: String,
         required: true,
@@ -61,6 +62,10 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+    }, */
+    orderAddress: {
+      type: addressSchema,
+      required: true,
     },
     imp_uid: {
       type: String,
