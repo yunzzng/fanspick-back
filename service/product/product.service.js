@@ -11,13 +11,31 @@ const createProduct = async (Data) => {
   }
 };
 /* 모든 상품 조회 */
-const findAllProduct = async () => {
+/* const findAllProduct = async () => {
   try {
     const product = await Product.find();
     if (!product) {
       return null;
     }
     return product;
+  } catch (err) {
+    console.log('[getAllfindAllProduct] Error ', err);
+    throw new Error('모든 상품 조회에 실패했습니다.', err);
+  }
+}; */
+/* 모든 상품 조회 */
+const findAllProduct = async (page, itemsPerPage) => {
+  try {
+    const limit = itemsPerPage;
+    const skip = (page - 1) * limit;
+
+    const product = await Product.find().skip(skip).limit(limit);
+
+    const totalCount = await Product.countDocuments();
+    if (!product) {
+      return null;
+    }
+    return { product, totalCount };
   } catch (err) {
     console.log('[getAllfindAllProduct] Error ', err);
     throw new Error('모든 상품 조회에 실패했습니다.', err);
