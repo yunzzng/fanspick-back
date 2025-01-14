@@ -9,7 +9,7 @@ const {
 
 const addReview = async (req, res) => {
   try {
-    const { productId, title, content, starpoint, images } = req.body;
+    const { productId, title, content, starpoint, images, orderId } = req.body;
     const userId = req.user.id; // JWT로부터 디코딩된 유저 ID
 
     if (!productId || !title || !content || !starpoint || !images) {
@@ -23,6 +23,7 @@ const addReview = async (req, res) => {
       content,
       image: images,
       starpoint,
+      orderId,
     });
 
     res.status(201).json({
