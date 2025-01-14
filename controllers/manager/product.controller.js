@@ -98,15 +98,17 @@ const addProduct = async (req, res) => {
 /* 모든 상품 조회 */
 const getAllProduct = async (req, res) => {
   try {
-    const { page, itemsPerPage } = req.query;
+    const { userId, page, itemsPerPage } = req.query;
+    console.log('userId ', userId);
     const { products, totalCount } = await findAllProductByUser(
+      userId,
       page,
       itemsPerPage,
     );
     if (!products) {
       return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
     }
-    console.log('products ', products);
+    // console.log('products ', products);
 
     res.status(200).json({
       message: '모든상품 조회완료',
