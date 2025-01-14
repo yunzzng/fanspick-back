@@ -7,6 +7,7 @@ const {
   updateProductById,
   deleteProductById,
   findAllProductByUser,
+  findProductCategory,
 } = require('../../service/product/product.service');
 /* 상품 등록 */
 const addProduct = async (req, res) => {
@@ -88,6 +89,38 @@ const getAllProduct = async (req, res) => {
         detailImage: item.detailImage,
         category: { name: item.category.name },
       })),
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: err.message });
+  }
+};
+/* 상품 조회(카테고리 & 페이지네이션) */
+const getProductCategory = async (req, res) => {
+  try {
+    const { page, itemsPerPage, category } = req.query;
+    const { product, totalCount } = await findProductCategory(
+      page,
+      itemsPerPage,
+      category,
+    );
+    if (!product) {
+      return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
+    }
+
+    res.status(200).json({
+      message: '모든상품 조회완료',
+      product: product.map((item) => ({
+        userId: item.userId,
+        _id: item._id,
+        name: item.name,
+        price: item.price,
+        introduce: item.introduce,
+        image: item.image,
+        detailImage: item.detailImage,
+        category: { name: item.category.name },
+      })),
+      totalCount,
     });
   } catch (err) {
     console.error(err);
@@ -222,6 +255,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
   addProduct,
   getAllProduct,
+  getProductCategory,
   getProduct,
   updateProduct,
   deleteProduct,
