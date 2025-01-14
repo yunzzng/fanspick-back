@@ -26,6 +26,8 @@ app.use(
     origin: 'http://localhost:5173',
   }),
 );
+
+// 쿠키 제거
 // app.use(
 //   session({
 //     secret: SESSION_SECRET,
