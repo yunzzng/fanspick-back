@@ -9,6 +9,7 @@ const managerRoutes = require('./routes/manager/manager.routes');
 const purchaseRoutes = require('./routes/purchase/purchase.routes');
 const reviewRoutes = require('./routes/review/review.routes');
 const mypageRoutes = require('./routes/mypage/mypage.routes');
+const awsRoutes = require('./routes/aws/aws.routes');
 
 // ============= passport =============
 require('./passport/jwt.strategy');
@@ -44,5 +45,6 @@ app.use('/api/manager', managerRoutes);
 app.use('/api/purchase', purchaseRoutes);
 app.use('/api/review', reviewRoutes);
 app.use('/api/mypage', mypageRoutes);
+app.use('/api/aws', awsRoutes);
 
 module.exports = app;

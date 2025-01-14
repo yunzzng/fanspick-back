@@ -23,6 +23,25 @@ const findAllProduct = async () => {
     throw new Error('모든 상품 조회에 실패했습니다.', err);
   }
 };
+/* 모든 상품 조회(페이지네이션) */
+const findAllProductByUser = async (userId, page, itemsPerPage) => {
+  try {
+    const limit = itemsPerPage;
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find({})
+      .populate('userId', 'name')
+      .sort('createdAt')
+      .skip(skip)
+      .limit(limit);
+
+    const totalCount = await Product.countDocuments();
+    return { products, totalCount };
+  } catch (err) {
+    console.log('[getfindAllProductByUser] Error ', err);
+    throw new Error('(페이지네이션)모든 상품 조회에 실패했습니다.', err);
+  }
+};
 /* 단일 상품 조회 */
 const findProductById = async (id) => {
   try {
@@ -72,4 +91,5 @@ module.exports = {
   findProductById,
   updateProductById,
   deleteProductById,
+  findAllProductByUser,
 };
