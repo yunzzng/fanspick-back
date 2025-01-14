@@ -70,9 +70,39 @@ const addProduct = async (req, res) => {
   }
 };
 /* 모든 상품 조회 */
+// const getAllProduct = async (req, res) => {
+//   try {
+//     const product = await findAllProduct();
+//     if (!product) {
+//       return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
+//     }
+
+//     res.status(200).json({
+//       message: '모든상품 조회완료',
+//       product: product.map((item) => ({
+//         userId: item.userId,
+//         _id: item._id,
+//         name: item.name,
+//         price: item.price,
+//         introduce: item.introduce,
+//         image: item.image,
+//         detailImage: item.detailImage,
+//         category: { name: item.category.name },
+//       })),
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     return res.status(500).json({ message: err.message });
+//   }
+// };
+/* 모든 상품 조회 */
 const getAllProduct = async (req, res) => {
   try {
-    const product = await findAllProduct();
+    const { page, itemsPerPage } = req.query;
+    const { product, totalCount } = await findAllProductByUser(
+      page,
+      itemsPerPage,
+    );
     if (!product) {
       return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
     }
@@ -89,6 +119,7 @@ const getAllProduct = async (req, res) => {
         detailImage: item.detailImage,
         category: { name: item.category.name },
       })),
+      totalCount,
     });
   } catch (err) {
     console.error(err);
