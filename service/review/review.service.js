@@ -24,7 +24,7 @@ const findReviewsByProduct = async (productId, page, itemsPerPage) => {
 
     const reviews = await Review.find({})
       .populate('userId', 'name profileImage')
-      .sort('createdAt')
+      .sort('-createdAt')
       .skip(skip)
       .limit(limit);
 
@@ -46,7 +46,7 @@ const findReviewsByUser = async (userId, page, itemsPerPage) => {
     const reviews = await Review.find({ userId })
       .populate('productId', 'name image')
       .populate('userId', 'name profileImage')
-      .sort('createdAt')
+      .sort('-createdAt')
       .skip(skip)
       .limit(limit);
 
