@@ -11,11 +11,22 @@ const {
 const router = express.Router();
 
 // 리뷰 등록
+// router.post(
+//   '/add',
+//   passport.authenticate('jwt', { session: false }),
+//   addReview,
+// ); // /api/review/add
 router.post(
   '/add',
   passport.authenticate('jwt', { session: false }),
-  addReview,
-); // /api/review/add
+  (req, res, next) => {
+    // 요청 데이터 콘솔 출력
+    console.log('리뷰 데이터 요청:', req.body);
+
+    // addReview 핸들러 호출
+    addReview(req, res, next);
+  }
+);
 
 // 리뷰 조회(단일) > 수정페이지
 router.get(
