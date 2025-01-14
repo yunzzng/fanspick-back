@@ -1,15 +1,13 @@
 const jwt = require('jsonwebtoken');
-const {
-  createUser,
-  findUserByEmail,
-} = require('../../service/oauth/oauth.service');
+const { createUser } = require('../../service/oauth/oauth.service');
 const { FRONT_URL } = require('../../consts/app');
 
 const handleSocialLoginCallback = async (req, res) => {
   const { provider, profile } = req.user;
 
-  const accessToken = req.user ? req.user.accessToken : null;
+  console.log('Authenticated User:', req.user);
 
+  const accessToken = req.user ? req.user.accessToken : null;
   if (!accessToken) {
     return res.status(401).json({ message: 'Access Token 저장 실패' });
   }
@@ -21,12 +19,12 @@ const handleSocialLoginCallback = async (req, res) => {
       termsAccepted: true,
     };
 
-    const userData =
+    const userData = 
       provider === 'kakao'
         ? {
             ...baseUser,
             name: profile._json.properties.nickname || '',
-            email: '',
+            email: profile._json.email || `example@elice.com`,
             profileImage: profile._json.properties.profile_image || '',
           }
         : provider === 'google'
@@ -45,28 +43,32 @@ const handleSocialLoginCallback = async (req, res) => {
           }
         : baseUser;
 
-    const existingUser =
-      (await findUserByEmail(userData.email)) || (await createUser(userData));
+    if (!userData.email) {
+      console.error(`Email not found for provider: ${provider}`);
+      return res.status(400).json({ message: '이메일 정보가 없습니다.' });
+    }
+
+    const newUser = await createUser(userData);
 
     const token = jwt.sign(
       {
-        id: existingUser._id,
-        name: existingUser.name,
-        email: existingUser.email,
-        role: existingUser.role,
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        provider: newUser.provider,
       },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' },
+      { expiresIn: '1h' }
     );
 
-
     const redirectUrl = `${FRONT_URL}oauth/callback?token=${token}&id=${
-      existingUser._id
-    }&name=${encodeURIComponent(existingUser.name)}&email=${encodeURIComponent(
-      existingUser.email,
-    )}&role=${existingUser.role}&profileImage=${encodeURIComponent(
-      existingUser.profileImage,
-    )}&provider=${provider}`; 
+      newUser._id
+    }&name=${encodeURIComponent(newUser.name)}&email=${encodeURIComponent(
+      newUser.email
+    )}&role=${newUser.role}&profileImage=${encodeURIComponent(
+      newUser.profileImage
+    )}&provider=${provider}`;
 
     res.redirect(redirectUrl);
     console.log('Redirect URL:', redirectUrl);

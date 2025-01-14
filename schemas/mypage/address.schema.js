@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const addressSchema = new mongoose.Schema(
   {
@@ -8,7 +8,7 @@ const addressSchema = new mongoose.Schema(
     },
     jibunAddress: {
       type: String,
-      required: true,
+      required: false,
     },
     zoneCode: {
       type: String,
@@ -21,6 +21,6 @@ const addressSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 module.exports = addressSchema;
