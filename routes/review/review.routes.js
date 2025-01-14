@@ -38,7 +38,7 @@ router.get(
 // 리뷰 조회(상품상세피이지)
 router.get(
   '/product/:productId',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   getReviewsByProduct,
 );
 

@@ -46,17 +46,17 @@ const findProductCategory = async (page, itemsPerPage, category) => {
   }
 };
 /* 모든 상품 조회(페이지네이션) */
-const findAllProductByUser = async (page, itemsPerPage) => {
+const findAllProductByUser = async (userId, page, itemsPerPage) => {
   try {
     const limit = itemsPerPage;
     const skip = (page - 1) * limit;
 
-    const products = await Product.find()
+    const products = await Product.find({ userId })
       .sort('createdAt')
       .skip(skip)
       .limit(limit);
 
-    const totalCount = await Product.countDocuments();
+    const totalCount = await Product.countDocuments({ userId });
 
     if (!products) {
       return null;
