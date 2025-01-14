@@ -11,13 +11,20 @@ const createOrder = async (orderData) => {
 };
 
 //주문 조회
-const getOrderList = async (userId) => {
+const getOrderList = async (userId, page, itemsPerPage) => {
   try {
-    const orderList = await Order.find({ userId }).populate(
-      'products.productId',
-      'name price image',
-    );
-    return orderList;
+    const limit = itemsPerPage;
+    const skip = (page - 1) * limit;
+
+    const orderList = await Order.find({ userId })
+      .populate('products.productId', 'name price image')
+      .sort('createdAt')
+      .skip(skip)
+      .limit(limit);
+
+    const totalCount = await Order.countDocuments({ userId });
+
+    return { orderList, totalCount };
   } catch (err) {
     console.log('[getOrderList] Error', err);
     throw new Error('주문 목록 조회에 실패했습니다.');
