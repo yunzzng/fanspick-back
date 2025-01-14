@@ -4,6 +4,7 @@ const cors = require('cors');
 // const session = require('express-session');
 // const MongoDBSessionStore = require('connect-mongodb-session')(session);
 // const { SESSION_SECRET, MONGODB_URL } = require('./consts/app');
+const passport = require('passport'); 
 const oauthRoutes = require('./routes/oauth/oauth.routes');
 const managerRoutes = require('./routes/manager/manager.routes');
 const purchaseRoutes = require('./routes/purchase/purchase.routes');
