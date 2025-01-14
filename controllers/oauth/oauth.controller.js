@@ -24,7 +24,7 @@ const handleSocialLoginCallback = async (req, res) => {
         ? {
             ...baseUser,
             name: profile._json.properties.nickname || '',
-            email: profile._json.email || `example@elice.com`,
+            email: profile._json.kakao_account.email ||  `example${Date.now()}@example.com`,
             profileImage: profile._json.properties.profile_image || '',
           }
         : provider === 'google'
