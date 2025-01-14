@@ -57,6 +57,10 @@ const findAllProductByUser = async (page, itemsPerPage) => {
       .limit(limit);
 
     const totalCount = await Product.countDocuments();
+
+    if (!products) {
+      return null;
+    }
     return { products, totalCount };
   } catch (err) {
     console.log('[getfindAllProductByUser] Error ', err);
