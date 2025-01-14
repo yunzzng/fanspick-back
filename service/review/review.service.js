@@ -3,6 +3,7 @@ const Review = require('../../schemas/review/review.schema');
 // 리뷰 등록
 const createReview = async (reviewData) => {
   const newReview = new Review(reviewData);
+  console.log('newReview', newReview);
   return await newReview.save();
 };
 
@@ -51,6 +52,7 @@ const findReviewsByUser = async (userId, page, itemsPerPage) => {
 
     const totalCount = await Review.countDocuments({ userId });
 
+    console.log('reviews', reviews);
     return { reviews, totalCount };
   } catch (error) {
     console.error('[ReadReviewsByProduct] Error:', error);
@@ -62,7 +64,6 @@ const findReviewsByUser = async (userId, page, itemsPerPage) => {
 const updateReviewById = async (reviewId, updatedData) => {
   return await Review.findByIdAndUpdate(reviewId, updatedData, { new: true });
 };
-
 
 // 리뷰 삭제
 const deleteReviewById = async (reviewId) => {
