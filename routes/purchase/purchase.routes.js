@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/order', addOrder); // /api/purchase/order
 router.post('/payment', addPayment); // /api/purchase/payment
 router.get(
-  '/order/list',
+  '/order/list/:userId',
   passport.authenticate('jwt', { session: false }),
   readOrderList,
 ); //api/purchase/order
