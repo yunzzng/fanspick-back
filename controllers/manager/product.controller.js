@@ -6,7 +6,7 @@ const {
   findProductById,
   updateProductById,
   deleteProductById,
-  findByIds,
+  findAllProductByUser,
 } = require('../../service/product/product.service');
 /* 상품 등록 */
 const addProduct = async (req, res) => {
@@ -75,11 +75,8 @@ const getAllProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
     }
-    // console.log(
-    //   'product userId ',
-    //   product.map((item) => item.userId),
-    // );
-    res.status(201).json({
+
+    res.status(200).json({
       message: '모든상품 조회완료',
       product: product.map((item) => ({
         userId: item.userId,
@@ -97,6 +94,30 @@ const getAllProduct = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+/* 모든 상품 조회(페이지네이션) */
+const getAllProductByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { page, itemsPerPage } = req.query;
+
+    const { products, totalCount } = await findAllProductByUser(
+      userId,
+      page,
+      itemsPerPage,
+    );
+
+    res.status(200).json({
+      message: '모든 상품 조회 성공',
+      userId,
+      products,
+      totalCount,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 /* 단일 상품 조회 */
 const getProduct = async (req, res) => {
   try {
@@ -204,4 +225,5 @@ module.exports = {
   getProduct,
   updateProduct,
   deleteProduct,
+  getAllProductByUserId,
 };

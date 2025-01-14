@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 const PORT = 8080;
 
 const FRONT_URL = process.env.FRONT_URL;
@@ -19,6 +19,10 @@ const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID;
 const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET;
 const NAVER_CLIENT_CALLBACK_URL = process.env.NAVER_CLIENT_CALLBACK_URL;
 
+const VITE_ACCESS_KEY_ID = process.env.VITE_ACCESS_KEY_ID;
+const VITE_SECRET_ACCESS_KEY = process.env.VITE_SECRET_ACCESS_KEY;
+const VITE_REGION = process.env.VITE_REGION;
+
 module.exports = {
   PORT,
   FRONT_URL,
@@ -34,4 +38,7 @@ module.exports = {
   NAVER_CLIENT_ID,
   NAVER_CLIENT_SECRET,
   NAVER_CLIENT_CALLBACK_URL,
+  VITE_ACCESS_KEY_ID,
+  VITE_SECRET_ACCESS_KEY,
+  VITE_REGION,
 };
