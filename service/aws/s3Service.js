@@ -17,9 +17,9 @@ const createPresignedUrl = async () => {
   const timestamp = Date.now();
   const s3Params = {
     Bucket: 'fanspick',
-    Key: `images/${timestamp}`,
+    Key: `image/${timestamp}`,
     Expires: 300,
-    ContentType: 'image/png',
+    ContentType: 'image/jpeg',
   };
 
   try {
@@ -37,7 +37,7 @@ const createMultiPresignedUrls = async (fileCount) => {
     Bucket: 'fanspick',
     Key: `images/${timestamp}_${index}`,
     Expires: 300,
-    ContentType: 'image/png',
+    ContentType: 'image/jpeg',
   }));
 
   try {
