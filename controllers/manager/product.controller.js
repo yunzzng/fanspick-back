@@ -7,6 +7,7 @@ const {
   updateProductById,
   deleteProductById,
   findAllProductByUser,
+  findProductCategory,
 } = require('../../service/product/product.service');
 /* 상품 등록 */
 const addProduct = async (req, res) => {
@@ -69,7 +70,7 @@ const addProduct = async (req, res) => {
   }
 };
 /* 모든 상품 조회 */
-/* const getAllProduct = async (req, res) => {
+const getAllProduct = async (req, res) => {
   try {
     const product = await findAllProduct();
     if (!product) {
@@ -93,11 +94,16 @@ const addProduct = async (req, res) => {
     console.error(err);
     return res.status(500).json({ message: err.message });
   }
-}; */
-const getAllProduct = async (req, res) => {
+};
+/* 상품 조회(카테고리 & 페이지네이션) */
+const getProductCategory = async (req, res) => {
   try {
-    const { page, itemsPerPage } = req.query;
-    const { product, totalCount } = await findAllProduct(page, itemsPerPage);
+    const { page, itemsPerPage, category } = req.query;
+    const { product, totalCount } = await findProductCategory(
+      page,
+      itemsPerPage,
+      category,
+    );
     if (!product) {
       return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
     }
@@ -249,6 +255,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
   addProduct,
   getAllProduct,
+  getProductCategory,
   getProduct,
   updateProduct,
   deleteProduct,

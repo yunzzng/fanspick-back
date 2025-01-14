@@ -11,7 +11,7 @@ const createProduct = async (Data) => {
   }
 };
 /* 모든 상품 조회 */
-/* const findAllProduct = async () => {
+const findAllProduct = async () => {
   try {
     const product = await Product.find();
     if (!product) {
@@ -22,16 +22,20 @@ const createProduct = async (Data) => {
     console.log('[getAllfindAllProduct] Error ', err);
     throw new Error('모든 상품 조회에 실패했습니다.', err);
   }
-}; */
-/* 모든 상품 조회 */
-const findAllProduct = async (page, itemsPerPage) => {
+};
+/* 상품 조회(카테고리 & 페이지네이션) */
+const findProductCategory = async (page, itemsPerPage, category) => {
   try {
     const limit = itemsPerPage;
     const skip = (page - 1) * limit;
 
-    const product = await Product.find().skip(skip).limit(limit);
+    let filter = {};
+    if (category) {
+      filter = { 'category.name': category }; // category 필터링 추가
+    }
+    const product = await Product.find(filter).skip(skip).limit(limit);
+    const totalCount = await Product.countDocuments(filter);
 
-    const totalCount = await Product.countDocuments();
     if (!product) {
       return null;
     }
@@ -106,6 +110,7 @@ const deleteProductById = async (id) => {
 module.exports = {
   createProduct,
   findAllProduct,
+  findProductCategory,
   findProductById,
   updateProductById,
   deleteProductById,
