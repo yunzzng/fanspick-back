@@ -11,7 +11,7 @@ const {
 const { createError } = require('../../utils/error');
 
 /* 상품 등록 */
-const addProduct = async (req, res) => {
+const addProduct = async (req, res, next) => {
   try {
     const {
       userId,
@@ -74,7 +74,7 @@ const addProduct = async (req, res) => {
 };
 
 /* 관리자 모든 상품 조회(페이지네이션) */
-const getAllProduct = async (req, res) => {
+const getAllProduct = async (req, res, next) => {
   try {
     const { userId, page, itemsPerPage } = req.query;
     console.log('userId ', userId);
@@ -109,7 +109,7 @@ const getAllProduct = async (req, res) => {
   }
 };
 /* 상품 조회(카테고리 & 페이지네이션) */
-const getProductCategory = async (req, res) => {
+const getProductCategory = async (req, res, next) => {
   try {
     const { page, itemsPerPage, category } = req.query;
     const { product, totalCount } = await findProductCategory(
@@ -144,7 +144,7 @@ const getProductCategory = async (req, res) => {
 };
 
 /* 단일 상품 조회 */
-const getProduct = async (req, res) => {
+const getProduct = async (req, res, next) => {
   try {
     const product = await findProductById(req.params.id);
     if (product === null) {
@@ -175,7 +175,7 @@ const getProduct = async (req, res) => {
   }
 };
 /* 단일 상품 수정 */
-const updateProduct = async (req, res) => {
+const updateProduct = async (req, res, next) => {
   try {
     const {
       _id,
@@ -238,7 +238,7 @@ const updateProduct = async (req, res) => {
   }
 };
 /* 단일 상품 삭제 */
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res, next) => {
   try {
     const deleted = await deleteProductById(req.params.id);
     res.status(204).json({ message: '상품 삭제 완료되었습니다.' });
