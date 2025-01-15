@@ -18,7 +18,10 @@ const signup = async (req, res, next) => {
       throw createError(400, '모든 필수 필드를 입력하세요.');
     }
 
-    const existingUser = await findUserByEmail(email);
+    const existingUser = await findUserByEmail({
+      email: newUser.email,
+      provider: 'local',
+    });
     if (existingUser) {
       // return res.status(400).json({ message: '이미 사용 중인 이메일입니다.' });
       throw createError(400, '이미 사용 중인 이메일입니다.');
