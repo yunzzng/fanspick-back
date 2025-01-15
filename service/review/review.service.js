@@ -22,13 +22,13 @@ const findReviewsByProduct = async (productId, page, itemsPerPage) => {
     const limit = itemsPerPage;
     const skip = (page - 1) * limit;
 
-    const reviews = await Review.find({})
+    const reviews = await Review.find({productId })
       .populate('userId', 'name profileImage')
       .sort('-createdAt')
       .skip(skip)
       .limit(limit);
 
-    const totalCount = await Review.countDocuments();
+    const totalCount = await Review.countDocuments({productId });
 
     return { reviews, totalCount };
   } catch (error) {
