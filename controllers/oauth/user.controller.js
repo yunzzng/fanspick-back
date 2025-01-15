@@ -8,7 +8,7 @@ const {
 const jwt = require('jsonwebtoken');
 const createError = require('../../utils/error');
 
-const signup = async (req, res) => {
+const signup = async (req, res, next) => {
   try {
     const { name, email, password, role, termsAccepted } = req.body;
     console.log('회원가입 요청 받음:', req.body);
@@ -38,12 +38,12 @@ const signup = async (req, res) => {
     });
     console.log('새로운 사용자 생성 완료:', newUser);
     res.status(201).json({ message: '회원가입 성공!', user: newUser });
-  } catch (error) {
+  } catch (err) {
     next(err);
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -83,13 +83,13 @@ const login = async (req, res) => {
       token,
       tokenExpiry,
     });
-  } catch (error) {
+  } catch (err) {
     next(err);
   }
 };
 
 // 유저 정보 가져오기
-const getUserProfile = async (req, res) => {
+const getUserProfile = async (req, res, next) => {
   try {
     const userId = req.user.id; // JWT로부터 디코딩된 유저 ID
     const user = await findUserById(userId);
@@ -113,27 +113,27 @@ const getUserProfile = async (req, res) => {
         address: user.address,
       },
     });
-  } catch (error) {
-    console.error('유저 정보 가져오기 오류:', error);
+  } catch (err) {
+    console.error('유저 정보 가져오기 오류:', err);
     // res.status(500).json({ message: '서버 오류가 발생했습니다.' });
     next(err);
   }
 };
 
 // 로그아웃
-const logout = async (req, res) => {
+const logout = async (req, res, next) => {
   try {
     res.clearCookie('token', { path: '/' });
     res.status(200).json({ message: '로그아웃 성공!' });
-  } catch (error) {
-    console.error('로그아웃 오류:', error);
+  } catch (err) {
+    console.error('로그아웃 오류:', err);
     // res.status(500).json({ message: '서버 오류가 발생했습니다.' });
     next(err);
   }
 };
 
 // 프로필 수정
-const updateUserProfile = async (req, res) => {
+const updateUserProfile = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { name, email, password, address, profileImage } = req.body;
@@ -158,10 +158,12 @@ const updateUserProfile = async (req, res) => {
         email: updatedUser.email,
         address: updatedUser.address,
         profileImage: updatedUser.profileImage,
+        role: updatedUser.role,
+        provider: updatedUser.provider, 
       },
     });
-  } catch (error) {
-    console.error('유저 프로필 수정 중 오류:', error);
+  } catch (err) {
+    console.error('유저 프로필 수정 중 오류:', err);
     // res.status(500).json({ message: '서버 오류가 발생했습니다.' });
     next(err);
   }

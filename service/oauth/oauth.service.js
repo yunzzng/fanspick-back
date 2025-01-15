@@ -18,9 +18,14 @@ const updateUserById = async (id, updatedData) => {
   return await User.findByIdAndUpdate(id, updatedData, { new: true });
 };
 
+const findUserByProviderAndId = async (provider, providerId) => {
+  return await User.findOne({ provider, providerId });
+};
+
 module.exports = {
   findUserByEmail,
   findUserById,
   createUser,
   updateUserById,
+  findUserByProviderAndId,
 };
