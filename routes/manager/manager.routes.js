@@ -49,6 +49,4 @@ router.delete(
   deleteProduct,
 ); // /api/manager/product/:id
 
-// router.get('/product/:id', getAllProductByUserId); // /api/manager/product/:id
-
 module.exports = router;
