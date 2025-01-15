@@ -1,15 +1,18 @@
-const AWS = require('aws-sdk');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const {
   VITE_ACCESS_KEY_ID,
   VITE_SECRET_ACCESS_KEY,
   VITE_REGION,
 } = require('../../consts/app');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 require('dotenv').config();
 
-const s3 = new AWS.S3({
-  accessKeyId: VITE_ACCESS_KEY_ID,
-  secretAccessKey: VITE_SECRET_ACCESS_KEY,
+const s3 = new S3Client({
   region: VITE_REGION,
+  credentials: {
+    accessKeyId: VITE_ACCESS_KEY_ID,
+    secretAccessKey: VITE_SECRET_ACCESS_KEY,
+  },
 });
 
 /* 단일 이미지 등록할때 url생성 */
@@ -18,12 +21,11 @@ const createPresignedUrl = async () => {
   const s3Params = {
     Bucket: 'fanspick',
     Key: `image/${timestamp}`,
-    Expires: 300,
-    ContentType: 'image/jpeg',
   };
 
   try {
-    const url = await s3.getSignedUrlPromise('putObject', s3Params);
+    const command = new PutObjectCommand(s3Params);
+    const url = await getSignedUrl(s3, command, { expiresIn: 300 });
     return url;
   } catch (err) {
     throw new Error('presigned URL 생성중 오류');
@@ -36,13 +38,14 @@ const createMultiPresignedUrls = async (fileCount) => {
   const s3ParamsArr = Array.from({ length: fileCount }, (_, index) => ({
     Bucket: 'fanspick',
     Key: `images/${timestamp}_${index}`,
-    Expires: 300,
-    ContentType: 'image/jpeg',
   }));
 
   try {
     const urls = await Promise.all(
-      s3ParamsArr.map((params) => s3.getSignedUrlPromise('putObject', params)),
+      s3ParamsArr.map(async (params) => {
+        const command = new PutObjectCommand(params);
+        return await getSignedUrl(s3, command, { expiresIn: 300 });
+      }),
     );
     return urls;
   } catch (err) {

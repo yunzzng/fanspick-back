@@ -52,7 +52,7 @@ const findAllProductByUser = async (userId, page, itemsPerPage) => {
     const skip = (page - 1) * limit;
 
     const products = await Product.find({ userId })
-      .sort('createdAt')
+      .sort('-createdAt')
       .skip(skip)
       .limit(limit);
 
