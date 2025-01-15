@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const { createUser } = require('../../service/oauth/oauth.service');
+const { createUser,findUserByProviderAndId } = require('../../service/oauth/oauth.service');
 const { FRONT_URL } = require('../../consts/app');
 const createError = require('../../utils/error');
 
-const handleSocialLoginCallback = async (req, res) => {
+const handleSocialLoginCallback = async (req, res, next) => {
   const { provider, profile } = req.user;
 
   console.log('Authenticated User:', req.user);
@@ -18,6 +18,7 @@ const handleSocialLoginCallback = async (req, res) => {
       provider,
       role: 'user',
       termsAccepted: true,
+      providerId: profile.id,
     };
 
     const userData = 
@@ -25,7 +26,7 @@ const handleSocialLoginCallback = async (req, res) => {
         ? {
             ...baseUser,
             name: profile._json.properties.nickname || '',
-            email: profile._json.kakao_account.email ||  `example${Date.now()}@example.com`,
+            email: profile._json.kakao_account.email ||  `kakao_${profile.id}@example.com`,
             profileImage: profile._json.properties.profile_image || '',
           }
         : provider === 'google'
@@ -49,7 +50,10 @@ const handleSocialLoginCallback = async (req, res) => {
       throw createError(400, '이메일 정보가 없습니다.');
     }
 
-    const newUser = await createUser(userData);
+    // const newUser = await createUser(userData);
+    const existingUser = await findUserByProviderAndId(provider, profile.id);
+
+    const newUser = existingUser || (await createUser(userData));
 
     const token = jwt.sign(
       {
@@ -73,7 +77,7 @@ const handleSocialLoginCallback = async (req, res) => {
 
     res.redirect(redirectUrl);
     console.log('Redirect URL:', redirectUrl);
-  } catch (error) {
+  } catch (err) {
     // console.error('Error occurred:', error);
     // res.status(500).json({ success: false, message: '서버 오류 발생' });
     next(err);

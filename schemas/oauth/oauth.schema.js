@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema(
       enum: ['local', 'google', 'kakao', 'naver'], 
       default: 'local', 
     },
+    providerId: { 
+      type: String,
+      required: function() {
+        return this.provider !== 'local';
+      },
+    },
   },
   {
     timestamps: true,
