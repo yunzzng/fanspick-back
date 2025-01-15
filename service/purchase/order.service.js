@@ -18,7 +18,7 @@ const getOrderList = async (userId, page, itemsPerPage) => {
 
     const orderList = await Order.find({ userId })
       .populate('products.productId', 'name price image')
-      .sort('createdAt')
+      .sort('-createdAt')
       .skip(skip)
       .limit(limit);
 

@@ -2,6 +2,7 @@ const {
   createOrder,
   getOrderList,
 } = require('../../service/purchase/order.service');
+const createError = require('../../utils/error');
 
 const addOrder = async (req, res) => {
   try {
@@ -37,6 +38,10 @@ const readOrderList = async (req, res) => {
 
     console.log('주문내역 조회 유저 아이디', userId);
 
+    if (!userId) {
+      throw createError(400, '유효한 userId가 필요합니다.');
+    }
+
     const { orderList, totalCount } = await getOrderList(
       userId,
       page,
@@ -49,8 +54,7 @@ const readOrderList = async (req, res) => {
         .json({ message: '주문 내역 조회 성공', orderList, totalCount });
     }
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: '주문 내역 조회 실패' });
+    next(err);
   }
 };
 
