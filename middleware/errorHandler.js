@@ -1,4 +1,4 @@
-const errorHandler = (err, req, res) => {
+const errorHandler = (err, req, res, next) => {
   const status = err.status || 500; // 상태 코드가 없으면 500
   const message = err.message || '서버 오류가 발생했습니다.';
 
