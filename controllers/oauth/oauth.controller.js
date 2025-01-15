@@ -39,7 +39,7 @@ const handleSocialLoginCallback = async (req, res, next) => {
         : provider === 'naver'
         ? {
             ...baseUser,
-            name: profile._json.nickname || '',
+            name: profile._json.name || '',
             email: profile._json.email || '',
             profileImage: profile._json.profile_image || '',
           }
