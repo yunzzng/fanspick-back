@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema(
     providerId: { 
       type: String,
       required: function() {
-        return this.provider === 'kakao';
+        return this.provider !== 'local';
       },
     },
   },
