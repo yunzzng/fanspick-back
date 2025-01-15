@@ -4,14 +4,12 @@ const {
 } = require('../../service/purchase/order.service');
 const createError = require('../../utils/error');
 
-const addOrder = async (req, res) => {
+const addOrder = async (req, res, next) => {
   try {
     const { userId, products, orderAddress, imp_uid, totalPrice } = req.body;
 
     if (!orderAddress) {
-      return res
-        .status(400)
-        .json({ message: '입력이 안된 필드값이 있습니다.' });
+      throw createError(400, '입력이 안된 필드값이 있습니다.');
     }
 
     const createResult = await createOrder({
@@ -26,12 +24,11 @@ const addOrder = async (req, res) => {
       .status(200)
       .json({ data: createResult, message: '구매 완료되었습니다.' });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 
-const readOrderList = async (req, res) => {
+const readOrderList = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { page, itemsPerPage } = req.query;

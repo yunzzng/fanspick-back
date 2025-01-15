@@ -2,7 +2,7 @@ const createError = require('../../utils/error');
 
 const { findByIds } = require('../../service/mypage/mypage.service');
 
-const getProductsByIds = async (req, res) => {
+const getProductsByIds = async (req, res, next) => {
   try {
     const { ids } = req.query;
     console.log('ids', ids);
