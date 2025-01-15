@@ -2,13 +2,14 @@ const { Category } = require('../../schemas/category/category.schema');
 
 const {
   createProduct,
-  findAllProduct,
   findProductById,
   updateProductById,
   deleteProductById,
   findAllProductByUser,
   findProductCategory,
 } = require('../../service/product/product.service');
+const { createError } = require('../../utils/error');
+
 /* 상품 등록 */
 const addProduct = async (req, res) => {
   try {
@@ -22,7 +23,6 @@ const addProduct = async (req, res) => {
       categoryIndex,
     } = req.body;
     console.log('managerId ', req.body);
-    // console.log('detailImage ', detailImage);
     if (
       !userId ||
       !name ||
@@ -33,9 +33,10 @@ const addProduct = async (req, res) => {
       categoryIndex === undefined ||
       categoryIndex === null
     ) {
-      return res
-        .status(400)
-        .json({ message: '입력이 안된 필드값이 있습니다.' });
+      // return res
+      //   .status(400)
+      //   .json({ message: '입력이 안된 필드값이 있습니다.' });
+      throw createError(400, '입력이 안된 필드값이 있습니다.');
     }
     const categories = await Category.find();
 
@@ -44,9 +45,10 @@ const addProduct = async (req, res) => {
     console.log('categories ', categories);
     console.log('resultCategoryName ', resultCategoryName);
     if (!resultCategoryName) {
-      return res
-        .status(400)
-        .json({ message: '유효하지 않은 카테고리 인덱스입니다.' });
+      // return res
+      //   .status(400)
+      //   .json({ message: '유효하지 않은 카테고리 인덱스입니다.' });
+      throw createError(400, '유효하지 않은 카테고리 인덱스입니다.');
     }
     const resultCategory = { name: resultCategoryName };
 
@@ -65,8 +67,9 @@ const addProduct = async (req, res) => {
       .status(201)
       .json({ data: createResult, message: '상품 등록 완료되었습니다.' });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
+    // console.error(err);
+    // return res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 
@@ -81,9 +84,9 @@ const getAllProduct = async (req, res) => {
       itemsPerPage,
     );
     if (!products) {
-      return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
+      // return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
+      throw createError(404, '상품을 찾을 수 없습니다.');
     }
-    // console.log('products ', products);
 
     res.status(200).json({
       message: '모든상품 조회완료',
@@ -100,8 +103,9 @@ const getAllProduct = async (req, res) => {
       totalCount,
     });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
+    // console.error(err);
+    // return res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 /* 상품 조회(카테고리 & 페이지네이션) */
@@ -114,7 +118,8 @@ const getProductCategory = async (req, res) => {
       category,
     );
     if (!product) {
-      return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
+      // return res.status(404).json({ message: '상품을 찾을 수 없습니다.' });
+      throw createError(404, '상품을 찾을 수 없습니다.');
     }
 
     res.status(200).json({
@@ -132,31 +137,9 @@ const getProductCategory = async (req, res) => {
       totalCount,
     });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-};
-/* 모든 상품 조회(페이지네이션) */
-const getAllProductByUserId = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const { page, itemsPerPage } = req.query;
-
-    const { products, totalCount } = await findAllProductByUser(
-      userId,
-      page,
-      itemsPerPage,
-    );
-
-    res.status(200).json({
-      message: '모든 상품 조회 성공',
-      userId,
-      products,
-      totalCount,
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
+    // console.error(err);
+    // return res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 
@@ -165,9 +148,10 @@ const getProduct = async (req, res) => {
   try {
     const product = await findProductById(req.params.id);
     if (product === null) {
-      return res
-        .status(400)
-        .json({ message: '잘못된 상품 데이터 요청 입니다.' });
+      // return res
+      //   .status(400)
+      //   .json({ message: '잘못된 상품 데이터 요청 입니다.' });
+      throw createError(400, '잘못된 상품 데이터 요청 입니다.');
     }
     const { _id, name, price, introduce, image, detailImage, category } =
       product;
@@ -185,8 +169,9 @@ const getProduct = async (req, res) => {
       message: '상품 상세조회 성공',
     });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
+    // console.error(err);
+    // return res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 /* 단일 상품 수정 */
@@ -215,9 +200,10 @@ const updateProduct = async (req, res) => {
       categoryIndex === undefined ||
       categoryIndex === null
     ) {
-      return res
-        .status(400)
-        .json({ message: '입력이 안된 필드값이 있습니다.' });
+      // return res
+      //   .status(400)
+      //   .json({ message: '입력이 안된 필드값이 있습니다.' });
+      throw createError(400, '입력이 안된 필드값이 있습니다.');
     }
 
     const categories = await Category.find();
@@ -227,9 +213,10 @@ const updateProduct = async (req, res) => {
     // console.log('categories ', categories);
     // console.log('resultCategoryName ', resultCategoryName);
     if (!resultCategoryName) {
-      return res
-        .status(400)
-        .json({ message: '유효하지 않은 카테고리 인덱스입니다.' });
+      // return res
+      //   .status(400)
+      //   .json({ message: '유효하지 않은 카테고리 인덱스입니다.' });
+      throw createError(400, '유효하지 않은 카테고리 인덱스입니다.');
     }
     const resultCategory = { name: resultCategoryName };
 
@@ -243,11 +230,11 @@ const updateProduct = async (req, res) => {
       detailImage,
       category: resultCategory,
     });
-    // console.log('updateResult ', updateResult);
     res.status(204).json({ message: '상품 수정 완료되었습니다.' });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
+    // console.error(err);
+    // return res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 /* 단일 상품 삭제 */
@@ -256,8 +243,9 @@ const deleteProduct = async (req, res) => {
     const deleted = await deleteProductById(req.params.id);
     res.status(204).json({ message: '상품 삭제 완료되었습니다.' });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
+    // console.error(err);
+    // return res.status(500).json({ message: err.message });
+    next(err);
   }
 };
 
@@ -268,5 +256,4 @@ module.exports = {
   getProduct,
   updateProduct,
   deleteProduct,
-  getAllProductByUserId,
 };
