@@ -6,6 +6,7 @@ const {
   deleteReviewById,
   updateReviewById,
 } = require('../../service/review/review.service');
+const createError = require('../../utils/error');
 
 const addReview = async (req, res) => {
   try {
@@ -13,7 +14,8 @@ const addReview = async (req, res) => {
     const userId = req.user.id; // JWT로부터 디코딩된 유저 ID
 
     if (!productId || !title || !content || !starpoint || !images) {
-      return res.status(400).json({ message: '모든 필드를 입력해주세요.' });
+      // return res.status(400).json({ message: '모든 필드를 입력해주세요.' });
+      throw createError(400, '모든 필드를 입력해주세요.');
     }
 
     const newReview = await createReview({
@@ -32,7 +34,8 @@ const addReview = async (req, res) => {
     });
   } catch (error) {
     console.error('리뷰 등록 오류:', error);
-    res.status(500).json({ message: '리뷰 등록 중 서버 오류가 발생했습니다.' });
+    // res.status(500).json({ message: '리뷰 등록 중 서버 오류가 발생했습니다.' });
+    next(err);
   }
 };
 
@@ -57,10 +60,11 @@ const getReviewsByProduct = async (req, res) => {
     });
   } catch (error) {
     console.error('리뷰 조회 중 에러: ', error.message);
-    res.status(500).json({
-      isError: true,
-      message: '리뷰 조회에 실패했습니다.',
-    });
+    // res.status(500).json({
+    //   isError: true,
+    //   message: '리뷰 조회에 실패했습니다.',
+    // });
+    next(err);
   }
 };
 
@@ -84,9 +88,10 @@ const getReviewsByUser = async (req, res) => {
     });
   } catch (error) {
     console.error('유저 리뷰 가져오기 오류:', error);
-    res
-      .status(500)
-      .json({ message: '유저 리뷰 가져오는 중 서버 오류가 발생했습니다.' });
+    // res
+    //   .status(500)
+    //   .json({ message: '유저 리뷰 가져오는 중 서버 오류가 발생했습니다.' });
+    next(err);
   }
 };
 
@@ -97,15 +102,17 @@ const getReviewById = async (req, res) => {
     const review = await findReviewById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ message: '리뷰를 찾을 수 없습니다.' });
+      // return res.status(404).json({ message: '리뷰를 찾을 수 없습니다.' });
+      throw createError(404, '리뷰를 찾을 수 없습니다.');
     }
 
     res.status(200).json({ message: '리뷰 가져오기 성공', review });
   } catch (error) {
     console.error('리뷰 가져오기 오류:', error);
-    res
-      .status(500)
-      .json({ message: '리뷰 가져오는 중 서버 오류가 발생했습니다.' });
+    // res
+    //   .status(500)
+    //   .json({ message: '리뷰 가져오는 중 서버 오류가 발생했습니다.' });
+    next(err);
   }
 };
 
@@ -117,13 +124,17 @@ const updateReview = async (req, res) => {
     const updatedReview = await updateReviewById(reviewId, updatedData);
 
     if (!updatedReview) {
-      return res.status(404).json({ message: "리뷰를 찾을 수 없습니다." });
+      // return res.status(404).json({ message: "리뷰를 찾을 수 없습니다." });
+      throw createError(404, '리뷰를 찾을 수 없습니다.');
     }
 
-    res.status(200).json({ message: "리뷰 업데이트 성공!", review: updatedReview });
+    res
+      .status(200)
+      .json({ message: '리뷰 업데이트 성공!', review: updatedReview });
   } catch (error) {
-    console.error("리뷰 업데이트 오류:", error);
-    res.status(500).json({ message: "리뷰 업데이트 중 서버 오류가 발생했습니다." });
+    console.error('리뷰 업데이트 오류:', error);
+    // res.status(500).json({ message: "리뷰 업데이트 중 서버 오류가 발생했습니다." });
+    next(err);
   }
 };
 
@@ -134,13 +145,15 @@ const deleteReview = async (req, res) => {
     const deletedReview = await deleteReviewById(reviewId);
 
     if (!deletedReview) {
-      return res.status(404).json({ message: '리뷰를 찾을 수 없습니다.' });
+      // return res.status(404).json({ message: '리뷰를 찾을 수 없습니다.' });
+      throw createError(404, '리뷰를 찾을 수 없습니다.');
     }
 
     res.status(200).json({ message: '리뷰 삭제 성공', review: deletedReview });
   } catch (error) {
     console.error('리뷰 삭제 오류:', error);
-    res.status(500).json({ message: '리뷰 삭제 중 서버 오류가 발생했습니다.' });
+    // res.status(500).json({ message: '리뷰 삭제 중 서버 오류가 발생했습니다.' });
+    next(err);
   }
 };
 
