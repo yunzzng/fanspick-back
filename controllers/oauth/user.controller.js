@@ -18,7 +18,7 @@ const signup = async (req, res, next) => {
       throw createError(400, '모든 필수 필드를 입력하세요.');
     }
 
-    const existingUser = await findUserByEmail(email); 
+    const existingUser = await findUserByEmail(email);
     if (existingUser) {
       // return res.status(400).json({ message: '이미 사용 중인 이메일입니다.' });
       throw createError(400, '이미 사용 중인 이메일입니다.');
@@ -136,15 +136,23 @@ const logout = async (req, res, next) => {
 const updateUserProfile = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { name, email, password, address, profileImage } = req.body;
+    const { name, email, password, address, profileImage, businessNumber } =
+      req.body;
 
-    let updatedData = { name, email, address, profileImage };
+    let updatedData = { name, email, address, profileImage, businessNumber };
     if (password) {
       const hashedPassword = crypto
         .createHash('sha512')
         .update(password)
         .digest('base64');
       updatedData.password = hashedPassword;
+    }
+
+    const user = await findUserById(userId);
+    if (user.role === 'manager' && businessNumber) {
+      updatedData.businessNumber = businessNumber;
+    } else {
+      updatedData.businessNumber = undefined;
     }
 
     const updatedUser = await updateUserById(userId, updatedData);
@@ -160,6 +168,7 @@ const updateUserProfile = async (req, res, next) => {
         profileImage: updatedUser.profileImage,
         role: updatedUser.role,
         provider: updatedUser.provider,
+        businessNumber: updatedUser.businessNumber,
       },
     });
   } catch (err) {
