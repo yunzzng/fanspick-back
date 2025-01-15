@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { createUser } = require('../../service/oauth/oauth.service');
 const { FRONT_URL } = require('../../consts/app');
+const createError = require('../../utils/error');
 
 const handleSocialLoginCallback = async (req, res) => {
   const { provider, profile } = req.user;
@@ -9,7 +10,7 @@ const handleSocialLoginCallback = async (req, res) => {
 
   const accessToken = req.user ? req.user.accessToken : null;
   if (!accessToken) {
-    return res.status(401).json({ message: 'Access Token 저장 실패' });
+    throw createError(401, 'Access Token 저장 실패');
   }
 
   try {
@@ -45,7 +46,7 @@ const handleSocialLoginCallback = async (req, res) => {
 
     if (!userData.email) {
       console.error(`Email not found for provider: ${provider}`);
-      return res.status(400).json({ message: '이메일 정보가 없습니다.' });
+      throw createError(400, '이메일 정보가 없습니다.');
     }
 
     const newUser = await createUser(userData);
@@ -73,8 +74,9 @@ const handleSocialLoginCallback = async (req, res) => {
     res.redirect(redirectUrl);
     console.log('Redirect URL:', redirectUrl);
   } catch (error) {
-    console.error('Error occurred:', error);
-    res.status(500).json({ success: false, message: '서버 오류 발생' });
+    // console.error('Error occurred:', error);
+    // res.status(500).json({ success: false, message: '서버 오류 발생' });
+    next(err);
   }
 };
 
