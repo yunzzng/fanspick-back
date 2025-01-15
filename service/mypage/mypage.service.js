@@ -24,7 +24,7 @@ const findItemByIds = async (ids, page, itemsPerPage) => {
 
     const productDetail = await Product.find({ _id: { $in: ids } })
       .populate('productId', 'name image price')
-      .sort('createdAt')
+      .sort('-createdAt')
       .skip(skip)
       .limit(limit);
 
@@ -33,7 +33,7 @@ const findItemByIds = async (ids, page, itemsPerPage) => {
     return { productDetail, totalCount };
   } catch (error) {
     console.error('[ReadReviewsByProduct] Error:', error);
-    throw new Error('리뷰 조회에 실패했습니다.', { cause: error });
+    throw new Error('상품 조회에 실패했습니다.', { cause: error });
   }
 };
 
