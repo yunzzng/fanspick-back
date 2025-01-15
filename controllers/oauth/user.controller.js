@@ -6,7 +6,7 @@ const {
   updateUserById,
 } = require('../../service/oauth/oauth.service');
 const jwt = require('jsonwebtoken');
-const createError = require('../../utils/error');
+const { createError } = require('../../utils/error');
 
 const signup = async (req, res, next) => {
   try {
@@ -159,7 +159,7 @@ const updateUserProfile = async (req, res, next) => {
         address: updatedUser.address,
         profileImage: updatedUser.profileImage,
         role: updatedUser.role,
-        provider: updatedUser.provider, 
+        provider: updatedUser.provider,
       },
     });
   } catch (err) {

@@ -6,7 +6,7 @@ const {
   deleteReviewById,
   updateReviewById,
 } = require('../../service/review/review.service');
-const createError = require('../../utils/error');
+const { createError } = require('../../utils/error');
 
 const addReview = async (req, res, next) => {
   try {
