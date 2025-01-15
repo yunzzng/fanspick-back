@@ -4,7 +4,7 @@ const {
 } = require('../../service/aws/s3Service');
 
 /* presignedUrl 가져오기 */
-const getPresignedUrl = async (req, res) => {
+const getPresignedUrl = async (req, res, next) => {
   try {
     const url = await createPresignedUrl();
     res.status(200).json({ url, message: 'presigned URL 가져오기 성공' });
@@ -16,7 +16,7 @@ const getPresignedUrl = async (req, res) => {
 };
 
 /* presignedUrl 가져오기(다중) */
-const getMultiPresignedUrl = async (req, res) => {
+const getMultiPresignedUrl = async (req, res, next) => {
   const { fileCount } = req.query;
   try {
     const urls = await createMultiPresignedUrls(fileCount);
