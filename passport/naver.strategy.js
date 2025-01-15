@@ -24,7 +24,6 @@ passportNaverOauth.use(
       };
       
       console.log("Access Token:", accessToken);
-      console.log("Profile:", JSON.stringify(profile, null, 2));
       return done(null, user);
     }
   )
