@@ -13,6 +13,7 @@ passportNaverOauth.use(
       clientSecret: NAVER_CLIENT_SECRET,
       callbackURL: NAVER_CLIENT_CALLBACK_URL,
       passReqToCallback: true,
+      scope: ['profile', 'email', 'name'], 
     },
     (req, accessToken, refreshToken, profile, done) => {
       const user = {
@@ -21,7 +22,9 @@ passportNaverOauth.use(
         provider: "naver",
         role: "user",
       };
+      
       console.log("Access Token:", accessToken);
+      console.log("Profile:", JSON.stringify(profile, null, 2));
       return done(null, user);
     }
   )
