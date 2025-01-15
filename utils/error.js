@@ -5,6 +5,6 @@ class AppError extends Error {
   }
 }
 
-const createError = (status, message) => newAppError(message, status);
+const createError = (status, message) => new AppError(message, status);
 
 module.exports = { createError, AppError };

@@ -2,7 +2,7 @@ const {
   createOrder,
   getOrderList,
 } = require('../../service/purchase/order.service');
-const createError = require('../../utils/error');
+const { createError } = require('../../utils/error');
 
 const addOrder = async (req, res, next) => {
   try {

@@ -1,4 +1,4 @@
-const createError = require('../../utils/error');
+const { createError } = require('../../utils/error');
 
 const { findByIds } = require('../../service/mypage/mypage.service');
 
