@@ -53,6 +53,7 @@ app.use('/api/review', reviewRoutes);
 app.use('/api/mypage', mypageRoutes);
 app.use('/api/aws', awsRoutes);
 
+// 에러 핸들러
 app.use(errorHandler);
 
 module.exports = app;
