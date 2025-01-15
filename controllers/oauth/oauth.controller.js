@@ -49,7 +49,10 @@ const handleSocialLoginCallback = async (req, res) => {
       throw createError(400, '이메일 정보가 없습니다.');
     }
 
-    const newUser = await createUser(userData);
+    // const newUser = await createUser(userData);
+    const existingUser = await findUserByProviderAndEmail(provider, userData.email);
+
+    const newUser = existingUser || (await createUser(userData));
 
     const token = jwt.sign(
       {
