@@ -35,7 +35,7 @@ const signup = async (req, res, next) => {
       termsAccepted,
     });
     console.log('새로운 사용자 생성 완료:', newUser);
-    res.status(201).json({ message: '회원가입 성공!', user: newUser });
+    res.status(201).json({ message: '회원가입 성공', user: newUser });
   } catch (err) {
     next(err);
   }
