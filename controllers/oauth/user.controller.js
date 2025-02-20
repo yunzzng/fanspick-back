@@ -14,13 +14,11 @@ const signup = async (req, res, next) => {
     console.log('회원가입 요청 받음:', req.body);
 
     if (!name || !email || !password || !termsAccepted) {
-      // return res.status(400).json({ message: '모든 필수 필드를 입력하세요.' });
       throw createError(400, '모든 필수 필드를 입력하세요.');
     }
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-      // return res.status(400).json({ message: '이미 사용 중인 이메일입니다.' });
       throw createError(400, '이미 사용 중인 이메일입니다.');
     }
 
@@ -47,14 +45,12 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    // return res.status(400).json({ message: '이메일과 비밀번호를 입력하세요.' });
     throw createError(400, '이메일과 비밀번호를 입력하세요.');
   }
 
   try {
     const user = await findUserByEmail(email);
     if (!user) {
-      // return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
       throw createError(404, '사용자를 찾을 수 없습니다.');
     }
 
