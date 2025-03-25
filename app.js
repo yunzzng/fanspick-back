@@ -22,14 +22,16 @@ require('./passport/naver.strategy');
 
 const app = express();
 
+app.use(
+  cors({
+    origin: 'https://fanspick-front.vercel.app',
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
-app.use(
-  cors({
-    origin: 'http://localhost:5173',
-  }),
-);
+
 
 // 쿠키 제거
 // app.use(
